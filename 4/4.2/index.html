@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+const x = +prompt('Please enter 3 digits:');
+const splitted = x.toString().split('')
+
+if (splitted[0] === splitted[1] &&  splitted[1]=== splitted[2]){
+    alert('All are equal')
+} else if (splitted[0] === splitted[1] || splitted[0]=== splitted[2] || splitted[1] === splitted[2]){
+    alert('Only two of them are equal')
+} else {
+    alert('None of them are equal')
+}
+    </script>
+</body>
+</html>
