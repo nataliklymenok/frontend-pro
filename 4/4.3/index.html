@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const year = +prompt('Please set your year of birth:')
+        const city = prompt('Please set your city:')
+        const sport = prompt('Please set your favorite sport:')
+
+        let fullInfo;
+        let ageInfo = `Your age is ${2026-year}`;
+        let cityInfo;
+        let sportInfo;
+
+        if (city == 'Washington' || city == 'Kyiv' || city == 'London'){
+            cityInfo = `You live in the capital ${city}`
+        } else{
+            cityInfo = `You live in the city ${city}`
+        }
+
+        if (sport == 'football'){
+            sportInfo = `Super! Do you want to be Cristiano Ronaldo?`
+        } else if (sport == 'basketball'){
+            sportInfo = `Super! Do you want to be Michael Jordan?`
+        } else if (sport == 'F1'){
+            sportInfo = `Super! Do you want to be Lewis Hamilton?`
+        } else {
+            sportInfo =`${sport} is super`
+        }
+      
+        if (year === null || year === 0){
+            ageInfo = `It is sad that you dont want to set your year nof birth`
+        }
+        if (city === null| city?.trim() === ''){
+            cityInfo = `It is sad that you dont want to set your city`
+        }
+        if (sport === null || sport?.trim() === ''){
+            sportInfo = `It is sad that you dont want to set your sport`
+        }
+
+        fullInfo = 
+        `${ageInfo} 
+        ${cityInfo}
+        ${sportInfo}`
+
+        alert(fullInfo)
+    </script>
+</body>
+</html>
