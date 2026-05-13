@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //Дано ціле число (ввести через 'prompt'). 
+        //З'ясувати, чи просто воно (простим називається число, більше 1, що не має інших дільників, крім 1 і себе).
+        const n = +prompt('Please enter the number:')
+        let isPrime = true
+        if (n === 1) {
+            alert('You entered 1')
+        } else {
+            for (let i = 2; i<10; i++){
+                if (i === n) continue
+                if (n % i === 0){
+                    isPrime = false
+                }   
+            }
+            alert(isPrime ? 'Entered number is prime number' : 'Entered number is complex number' )
+        }
+    </script>
+</body>
+</html>
