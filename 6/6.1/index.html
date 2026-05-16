@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //Створіть об'єкт, що містить інформацію про користувача, 
+        //таку як ім'я, вік, місце проживання тощо. Створіть метод об'єкту для отримання та відображення цих даних.
+
+        const user = {
+            name: 'John',
+            age: 18,
+            city: 'Kyiv',
+            userData: function(){
+                for (const key in user){
+                    if (key === 'userData') continue
+                    console.log(`${key} : ${user[key]}`)
+                }              
+            }
+        }
+        user.userData()
+    </script>
+</body>
+</html>
