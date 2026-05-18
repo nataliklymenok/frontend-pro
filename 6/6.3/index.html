@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //Створіть об'єкт, який матиме одну властивість з масивом об'єктів. 
+        //Які представляють контакти у вашій контактній книзі. 
+        //Кожен об'єкт має містити ім'я, номер телефону та адресу електронної пошти. 
+        //Додайте метод для пошуку контакту за ім'ям та метод для додавання нових контактів.
+
+        const contacts = {
+            arrayOfContacts: [
+        {
+            name: 'Nata',
+            phone: 12345,
+            email: 'test@test.com'
+        },
+        {
+            name: 'Vadik',
+            phone: 2345,
+            email: 'test2@test.com'
+        },
+        {
+            name: 'Casper',
+            phone: 23456,
+            email: 'test3@test.com'
+        },
+        ],
+            searchContact: function(nameToSearch){
+              for (const contact of contacts.arrayOfContacts){
+                if (contact.name === nameToSearch){
+                    console.log(contact)
+                }
+               }
+
+            },
+            addContact: function(newContact){
+                contacts.arrayOfContacts.push(newContact)
+                
+            },
+
+        }
+
+        contacts.searchContact('Nata')
+
+        const newC =   {
+            name: 'Ket',
+            phone: 123457,
+            email: 'test4@test.com'
+        }
+
+        contacts.addContact(newC)
+        console.log(contacts.arrayOfContacts)
+    </script>
+</body>
+</html>
