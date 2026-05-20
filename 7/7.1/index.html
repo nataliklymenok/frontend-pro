@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //Створити функцію, яка прибирає з рядка всі символи, які ми передали другим аргументом. 
+        //'func(" hello world", ['l', 'd'])' поверне нам "heo wor". Вихідний рядок та символи для видалення задає користувач.
+
+        const filterString = function(str, lettersToRemove){
+            const a = str.split('')
+            let newList = []
+            for (let i=0; i < a.length; i++){
+               let isExists = false
+               for (let j of lettersToRemove){
+                if (a[i] === j){
+                    isExists = true                  
+                }         
+               }
+               !isExists && newList.push(a[i])              
+            }
+            return(newList.join(''))
+        }
+
+        console.log(filterString('hahabb  bggg', ['a', 'b']))
+        console.log(filterString(' hello world', ['l', 'd']))
+    </script>
+</body>
+</html>
