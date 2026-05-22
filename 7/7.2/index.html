@@ -10,15 +10,15 @@
         //Дано масив з елементами різних типів. 
         //Створити функцію яка вираховує середнє арифметичне лише числових елементів даного масиву.
 
-        const arr = ['a', 7, 2, 8, 9, 'b', '']
-        
+        //const arr = ['a', 7, 2, 8, 9, 'b', '']
+        const arr = ['a', 7, 2, 8, 9, 'b', NaN, '']
 
         const averageCount = function(array){
             let count = 0
             let sum = 0
             for (x of array){
                 
-                if (typeof x === 'number'){
+                if (typeof x === 'number' && !Number.isNaN(x)){
                     count++
                     sum +=x
                 } 
