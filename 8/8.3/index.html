@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //Цикл на кожній ітерації пропонує через prompt ввести число більше 100 (але максимум 10 ітерацій циклу) . 
+        //Якщо відвідувач ввів число менше ста – попросити ввести ще раз, і таке інше. 
+        //Якщо користувач вводить більше ста, текст або цикл закінчує всі ітерації, 
+        //то функція виводить в консоль останній введення користувача і завершує функцію.
+
+        const funnyLoop = function(){
+            let a = 0
+            let count = 0
+            while ((a < 100  || Number.isNaN(a)) && (count <10)){
+                a = +prompt('Please enter a number:')
+                count++
+            }
+            return alert(a)
+        }
+
+        console.log(funnyLoop())
+
+
+
+    </script>
+</body>
+</html>
