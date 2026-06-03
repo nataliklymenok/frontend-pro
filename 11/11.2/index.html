@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <p>Hello World!</p>
+    <button>Tap me</button>
+</head>
+<body>
+
+    <script>
+
+        const btn = document.querySelector('button')
+        const txt = document.querySelector('p')
+        txt.style.color = 'red'
+        let isTapped = false
+
+        function handliClick(){
+            isTapped = !isTapped
+            
+            txt.style.color = `${isTapped ? 'green' : 'red'}`     
+        }
+        btn.addEventListener('click', handliClick)
+        
+    </script>
+</body>
+</html>
