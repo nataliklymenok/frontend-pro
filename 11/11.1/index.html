@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Таблиця Піфагора</h1>
+    <table id="container"></table>
+ 
+    <script>
+        const parentEl = document.querySelector('#container')
+        for (let i =1; i<=10; i++){
+            const newEl = document.createElement('tr')
+
+            parentEl.appendChild(newEl);
+            for (let j = 1; j<=10; j++){
+                const newEl2 = document.createElement('td')
+                newEl2.textContent = j*i
+                parentEl.appendChild(newEl2);
+            }           
+        }
+    </script>
+    
+</body>
+</html>
