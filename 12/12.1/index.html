@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <button id="first">First button</button>
+    <button id="second">Second button</button>
+</head>
+<body>
+
+    <script>
+    //На сторінці є дві кнопки. При натисканні на першу кнопку користувач повинен ввести в prompt посилання, 
+    //при натисканні на другу – переадресовується на інший сайт (за раніше введеним посиланням).
+    const firstBtn = document.querySelector('#first')
+    const secondBtn = document.querySelector('#second')
+    let link = ''
+
+    function handleClickFirstBtn(){
+        link = prompt('Please enter the url')
+    }
+    firstBtn.addEventListener('click', handleClickFirstBtn)
+
+    function handleClickSecondBtn(){
+        window.open(link)
+    }
+
+    secondBtn.addEventListener('click', handleClickSecondBtn)
+    </script>
+    
+</body>
+</html>
