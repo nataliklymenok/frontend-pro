@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+    }
+
+    .form-card {
+      width: 760px;
+      padding: 48px 42px;
+      background: #f5f4fb;
+      border-radius: 18px;
+    }
+
+    h1 {
+      margin: 0 0 42px;
+      color: #f23865;
+      font-size: 44px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      font-size: 24px;
+      color: #555;
+      background: #ffffff;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #9aa4ad;
+    }
+
+    textarea {
+      height: 130px;
+      resize: vertical;
+      font-family: Arial, sans-serif;
+    }
+
+    .subtitle {
+      margin: 20px 0 24px;
+      color: #9aa4ad;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+    }
+
+    button {
+      width: 100%;
+      padding: 22px;
+      border: none;
+      border-radius: 14px;
+      background: #2ea7f2;
+      color: #ffffff;
+      font-size: 26px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(46, 167, 242, 0.35);
+    }
+
+    button:hover {
+      background: #1998e6;
+    }
+  </style>
+</head>
+<body>
+  <form class="form-card" >
+    <h1>We would like to help you</h1>
+
+    <input id="name" type="text" placeholder="Name" required/>
+    <textarea id="message" placeholder="Message"  minlength="5"></textarea>
+
+    <p class="subtitle">How to answer you?</p>
+
+    <input id="phone" type="tel" placeholder="Phone number" pattern="^\+380" title="Please start with +380"/>
+    <input id="email" type="email" placeholder="Email" pattern=".+@.+\..+"/>
+
+    <button id="submit" type="submit">Send message</button>
+  </form>
+</body>
+<script>
+    const name = document.querySelector('#name')
+    const message = document.querySelector('#message')
+    const phone = document.querySelector('#phone')
+    const email = document.querySelector('#email')
+    const submit = document.querySelector('.form-card')
+
+    submit.addEventListener('submit', handleSubmit)
+
+    function handleSubmit(event){
+        event.preventDefault();
+        console.log(`Data is sent: \n
+        Name: ${name.value} \n
+        Message: ${message.value} \n
+        Phone: ${phone.value} \n
+        Email: ${email.value}`);
+    }
+
+   
+</script>
+</html>
