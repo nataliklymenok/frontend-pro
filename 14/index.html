@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Slider UI</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f6f8fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 48px 80px 64px;
+      box-shadow: 0 16px 40px rgba(30, 60, 90, 0.12);
+    }
+
+    .slider-card {
+      display: flex;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #f3f5fb;
+      width: 100%;
+      height: 400px;
+      overflow: hidden;
+      object-fit: cover;
+    }
+   
+    .slider-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slider-image {
+      width: 320px;
+      min-height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slider-content {
+      padding: 42px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .author {
+      margin: 32px 0 6px;
+      color: #969aa5;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      background: #28a8ff;
+      color: #ffffff;
+      font-size: 34px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(40, 168, 255, 0.35);
+    }
+
+    .arrow-left {
+      left: 28px;
+    }
+
+    .arrow-right {
+      right: 28px;
+    }
+
+    .dots {
+      position: absolute;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 14px;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border: none;
+      border-radius: 50%;
+      background: #d8efff;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: #28a8ff;
+    }
+
+    @media (max-width: 900px) {
+      .slider {
+        padding: 32px 56px 56px;
+      }
+
+      .slider-card {
+        flex-direction: column;
+      }
+
+      .slider-image {
+        width: 100%;
+        height: 260px;
+        min-height: auto;
+      }
+
+      .quote {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="slider">
+    <button class="arrow arrow-left" type="button">‹</button>
+
+    <div class="slider-card">
+    </div>
+
+    <button class="arrow arrow-right" type="button">›</button>
+
+    <div class="dots">
+      
+    </div>
+    <script>
+        const PICTURE_MIN = 1
+        const PICTURE_MAX = 9
+        const img = document.createElement('img')
+        const sliderCard = document.querySelector(".slider-card")
+
+        const arrorLeft = document.querySelector(".arrow-left")
+        const arrorRight = document.querySelector(".arrow-right")
+
+        const dots = document.querySelector(".dots")
+        const dot = document.querySelector(".dot")
+
+        let number = 1
+
+        function tapArrowRight(){
+          if (number === PICTURE_MAX) {
+            arrorRight.style.display = 'none'
+            return
+          } else {
+            arrorLeft.style.display = 'block'
+            number +=1
+            changePicture(number)
+            setDotActive(number)  
+          }
+            
+        }
+        function tapArrowLeft(){
+          if (number === PICTURE_MIN) {
+            arrorLeft.style.display = 'none'
+            return
+          } else {
+            arrorRight.style.display = 'block'
+            number -=1
+            changePicture(number)
+            setDotActive(number)  
+          }
+        }
+
+        function changePicture(number){
+          img.src = `${number}.jpg`
+          sliderCard.appendChild(img)
+
+        }
+
+        function createDots(){
+          for (let i = PICTURE_MIN; i<= PICTURE_MAX; i++){
+            const newDot = document.createElement('button')
+            newDot.className = 'dot'
+            if (i === PICTURE_MIN) {
+              newDot.classList.add('active')
+          }
+            newDot.dataset.picture = i
+            dots.append(newDot)
+          }
+        }
+   
+        function handleDotClick(event) {
+          if (!event.target.classList.contains('dot')) return
+                 
+          number = Number(event.target.dataset.picture)
+          
+          changePicture(number)
+          setDotActive(number)        
+        }
+
+        function setDotActive(number){
+          const allDots = document.querySelectorAll('.dot')
+          allDots.forEach(dot => dot.classList.remove('active'))
+          allDots[number - 1].classList.add('active')
+        }
+
+        changePicture(number)
+        createDots()
+
+        arrorRight.addEventListener('click', tapArrowRight)
+        arrorLeft.addEventListener('click', tapArrowLeft)
+        dots.addEventListener('click', handleDotClick)
+
+
+    </script>
+  </section>
+</body>
+</html>
