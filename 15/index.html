@@ -106,6 +106,11 @@
       .delete-btn:hover {
         background-color: #d32f2f;
       }
+
+      .completed {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
     </style>
   </head>
   <body>
@@ -126,32 +131,11 @@
       const addBtn = document.querySelector(".add-btn");
 
       function handleClickAddBtn(event) {
-        const newLi = document.createElement("li");
-
-        const newSpan = document.createElement("span");
-        newSpan.className = "task-text";
-        newSpan.textContent = textFld.value;
-
-        const newEditBtn = document.createElement("button");
-        newEditBtn.className = "edit-btn";
-        newEditBtn.textContent = "Edit";
-
-        const newDeleteBtn = document.createElement("button");
-        newDeleteBtn.className = "delete-btn";
-        newDeleteBtn.textContent = "Delete";
-
         const id = Date.now();
 
-        newLi.dataset.id = id;
+        addToLocalStorage(id, textFld.value, false);
 
-        newLi.append(newSpan);
-        newLi.append(newEditBtn);
-        newLi.append(newDeleteBtn);
-        ulId.appendChild(newLi);
-
-        addToLocalStorage(textFld.value, id);
-
-        textFld.value = "";
+        createTask(id, textFld.value);
       }
 
       function handleClickDeleteBtn(event) {
@@ -170,7 +154,7 @@
           const span = li.querySelector(".task-text");
 
           const input = document.createElement("input");
-          input.className = "task-text";
+          input.className = "task-text edit-input";
           input.value = span.textContent;
 
           span.replaceWith(input);
@@ -186,13 +170,18 @@
           const li = event.target.closest("li");
           const id = li.dataset.id;
 
-          const input = li.querySelector("input");
+          const input = li.querySelector(".edit-input");
+          const checkbox = li.querySelector(".task-checkbox");
 
-          editFromLocalStorage(input.value, id);
+          editFromLocalStorage(id, input.value);
 
           const span = document.createElement("span");
           span.className = "task-text";
           span.textContent = input.value;
+
+          if (checkbox.checked) {
+            span.classList.add("completed");
+          }
 
           input.replaceWith(span);
 
@@ -202,12 +191,74 @@
         }
       }
 
-      function addToLocalStorage(val, id) {
+      function handleClickCheckbox(event) {
+        if (event.target.className === "task-checkbox") {
+          const li = event.target.closest("li");
+
+          const id = li.dataset.id;
+
+          const span = li.querySelector(".task-text");
+
+          if (event.target.checked) {
+            span.classList.add("completed");
+          } else {
+            span.classList.remove("completed");
+          }
+          const checkbox = event.target;
+
+          updateCompleted(id, checkbox.checked);
+        }
+      }
+
+      function createTask(id, task, completed = false) {
+        const newLi = document.createElement("li");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "task-checkbox";
+        checkbox.checked = completed;
+
+        const newSpan = document.createElement("span");
+        newSpan.className = "task-text";
+        newSpan.textContent = task;
+
+        const newEditBtn = document.createElement("button");
+        newEditBtn.className = "edit-btn";
+        newEditBtn.textContent = "Edit";
+
+        const newDeleteBtn = document.createElement("button");
+        newDeleteBtn.className = "delete-btn";
+        newDeleteBtn.textContent = "Delete";
+
+        if (completed) {
+          newSpan.classList.add("completed");
+        }
+
+        newLi.dataset.id = id;
+
+        newLi.append(checkbox);
+        newLi.append(newSpan);
+        newLi.append(newEditBtn);
+        newLi.append(newDeleteBtn);
+        ulId.appendChild(newLi);
+
+        textFld.value = "";
+      }
+
+      function init() {
+        let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
+
+        for (let i of todoList) {
+          createTask(i.id, i.text, i.completed);
+        }
+      }
+
+      function addToLocalStorage(id, val, completed) {
         let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
 
         const valObj = {
-          id: `${id}`,
-          text: `${val}`,
+          id: id,
+          text: val,
+          completed: completed,
         };
 
         todoList.push(valObj);
@@ -220,14 +271,14 @@
       function deleteFromLocalStorage(id) {
         let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
 
-        todoList = todoList.filter((todo) => todo.id !== id);
+        todoList = todoList.filter((todo) => todo.id !== Number(id));
         localStorage.setItem("todoList", JSON.stringify(todoList));
       }
 
-      function editFromLocalStorage(val, id) {
+      function editFromLocalStorage(id, val) {
         let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
 
-        const todo = todoList.find((todo) => todo.id === id);
+        const todo = todoList.find((todo) => todo.id === Number(id));
         if (todo) {
           todo.text = val;
         }
@@ -235,9 +286,23 @@
         localStorage.setItem("todoList", JSON.stringify(todoList));
       }
 
+      function updateCompleted(id, completed) {
+        let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
+
+        const todo = todoList.find((todo) => todo.id === Number(id));
+
+        if (todo) {
+          todo.completed = completed;
+        }
+
+        localStorage.setItem("todoList", JSON.stringify(todoList));
+      }
+      init();
+
       addBtn.addEventListener("click", handleClickAddBtn);
       ulId.addEventListener("click", handleClickDeleteBtn);
       ulId.addEventListener("click", handleClickEditBtn);
+      ulId.addEventListener("change", handleClickCheckbox);
     </script>
   </body>
 </html>
