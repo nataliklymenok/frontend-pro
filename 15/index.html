@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+      }
+
+      .todo-app {
+        width: 500px;
+        background: white;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .todo-form {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      #todoInput {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #dcdcdc;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      .add-btn,
+      .save-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+      }
+
+      .add-btn,
+      .save-btn:hover {
+        background-color: #43a047;
+      }
+
+      #todoList {
+        list-style: none;
+      }
+
+      #todoList li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+
+        padding: 12px;
+        margin-bottom: 10px;
+
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+      }
+
+      .task-text {
+        flex: 1;
+      }
+
+      .edit-btn,
+      .delete-btn {
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: white;
+      }
+
+      .edit-btn {
+        background-color: #2196f3;
+      }
+
+      .edit-btn:hover {
+        background-color: #1976d2;
+      }
+
+      .delete-btn {
+        background-color: #f44336;
+      }
+
+      .delete-btn:hover {
+        background-color: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="todo-app">
+      <h1>Todo List</h1>
+
+      <div class="todo-form">
+        <input id="todoInput" type="text" placeholder="Enter task" />
+        <button class="add-btn">Add</button>
+      </div>
+
+      <ul id="todoList"></ul>
+    </div>
+
+    <script>
+      const ulId = document.querySelector("#todoList");
+      const textFld = document.querySelector("#todoInput");
+      const addBtn = document.querySelector(".add-btn");
+
+      function handleClickAddBtn(event) {
+        const newLi = document.createElement("li");
+
+        const newSpan = document.createElement("span");
+        newSpan.className = "task-text";
+        newSpan.textContent = textFld.value;
+
+        const newEditBtn = document.createElement("button");
+        newEditBtn.className = "edit-btn";
+        newEditBtn.textContent = "Edit";
+
+        const newDeleteBtn = document.createElement("button");
+        newDeleteBtn.className = "delete-btn";
+        newDeleteBtn.textContent = "Delete";
+
+        const id = Date.now();
+
+        newLi.dataset.id = id;
+
+        newLi.append(newSpan);
+        newLi.append(newEditBtn);
+        newLi.append(newDeleteBtn);
+        ulId.appendChild(newLi);
+
+        addToLocalStorage(textFld.value, id);
+
+        textFld.value = "";
+      }
+
+      function handleClickDeleteBtn(event) {
+        if (event.target.className === "delete-btn") {
+          const id = event.target.closest("li").dataset.id;
+
+          deleteFromLocalStorage(id);
+
+          event.target.closest("LI").remove();
+        }
+      }
+
+      function handleClickEditBtn(event) {
+        if (event.target.classList.contains("edit-btn")) {
+          const li = event.target.closest("li");
+          const span = li.querySelector(".task-text");
+
+          const input = document.createElement("input");
+          input.className = "task-text";
+          input.value = span.textContent;
+
+          span.replaceWith(input);
+
+          event.target.textContent = "Save";
+          event.target.classList.remove("edit-btn");
+          event.target.classList.add("save-btn");
+
+          return;
+        }
+
+        if (event.target.classList.contains("save-btn")) {
+          const li = event.target.closest("li");
+          const id = li.dataset.id;
+
+          const input = li.querySelector("input");
+
+          editFromLocalStorage(input.value, id);
+
+          const span = document.createElement("span");
+          span.className = "task-text";
+          span.textContent = input.value;
+
+          input.replaceWith(span);
+
+          event.target.textContent = "Edit";
+          event.target.classList.remove("save-btn");
+          event.target.classList.add("edit-btn");
+        }
+      }
+
+      function addToLocalStorage(val, id) {
+        let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
+
+        const valObj = {
+          id: `${id}`,
+          text: `${val}`,
+        };
+
+        todoList.push(valObj);
+
+        let jsonTodo = JSON.stringify(todoList);
+
+        localStorage.setItem("todoList", jsonTodo);
+      }
+
+      function deleteFromLocalStorage(id) {
+        let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
+
+        todoList = todoList.filter((todo) => todo.id !== id);
+        localStorage.setItem("todoList", JSON.stringify(todoList));
+      }
+
+      function editFromLocalStorage(val, id) {
+        let todoList = JSON.parse(localStorage.getItem("todoList")) || [];
+
+        const todo = todoList.find((todo) => todo.id === id);
+        if (todo) {
+          todo.text = val;
+        }
+
+        localStorage.setItem("todoList", JSON.stringify(todoList));
+      }
+
+      addBtn.addEventListener("click", handleClickAddBtn);
+      ulId.addEventListener("click", handleClickDeleteBtn);
+      ulId.addEventListener("click", handleClickEditBtn);
+    </script>
+  </body>
+</html>
