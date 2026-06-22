@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //Вам потрібно зробити конструктор сутності "Студент". Студент має ім'я, прізвище, рік народження — це властивості.
+      // Є масив з оцінками, це також властивість. І є можливість отримати вік студента та його середній бал – це методи.
+
+      //Останній метод: .summary(), перевіряє середню оцінку і середнє відвідування(кількістьВідвідин/кількістьЗанять),
+      // і якщо середня оцінка більше 90, а середнє відвідування більше 0.9, то метод summary повертає рядок "Молодець!",
+      // якщо одне з цих значень менше , то - "Добре, але можна краще ", якщо обидва нижче - "Редиска!".
+
+      function Student(name, surname, yearOfBirth, marks) {
+        this.name = name;
+        this.surname = surname;
+        this.yearOfBirth = yearOfBirth;
+        this.marks = marks;
+        this.presents = new Array(0);
+        this.age = function () {
+          return `${this.name} years old: ${2026 - +this.yearOfBirth}`;
+        };
+        this.avgScore = function () {
+          let sum = this.marks.reduce((acc, item) => acc + item, 0);
+
+          return sum / this.marks.length;
+        };
+        this.present = function () {
+          if (this.presents.length < 25) {
+            this.presents.push(true);
+          }
+        };
+        this.absent = function () {
+          if (this.presents.length < 25) {
+            this.presents.push(false);
+          }
+        };
+        this.summary = function () {
+          let averageScore = this.avgScore();
+          let numPresents = this.presents.reduce((acc, item) => {
+            return item ? acc + 1 : acc;
+          }, 0);
+          let averagePresents = numPresents / this.presents.length;
+          if (averageScore > 90 && averagePresents > 0.9) {
+            return "Молодець!";
+          } else if (
+            (averageScore < 90 && averagePresents > 0.9) ||
+            (averageScore > 90 && averagePresents < 0.9)
+          ) {
+            return "Добре, але можна краще";
+          } else {
+            return "Редиска!";
+          }
+        };
+      }
+
+      const ann = new Student("Ann", "Kos", 1991, [90, 90, 99]);
+
+      for (let i = 0; i < 30; i++) {
+        ann.absent();
+        ann.present();
+      }
+      console.log(ann.age());
+      console.log(ann.avgScore());
+      console.log(ann.summary());
+
+      const vadik = new Student("Vadik", "Kovalsky", 1988, [100, 90, 99]);
+
+      for (let i = 0; i < 30; i++) {
+        vadik.present();
+      }
+      console.log(vadik.age());
+      console.log(vadik.avgScore());
+      console.log(vadik.summary());
+
+      const nata = new Student("Nata", "Kl", 1991, [80, 90, 88]);
+
+      for (let i = 0; i < 30; i++) {
+        nata.absent();
+        nata.present();
+      }
+      console.log(nata.age());
+      console.log(nata.avgScore());
+      console.log(nata.summary());
+    </script>
+  </body>
+</html>
