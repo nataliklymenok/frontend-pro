@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #eee;
+        font-family: Arial, sans-serif;
+      }
+
+      .weather-card {
+        width: 900px;
+        min-height: 420px;
+        padding: 45px 55px;
+        display: flex;
+        justify-content: space-between;
+        color: white;
+
+        background: linear-gradient(135deg, #1b55c9, #24006d);
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .date {
+        font-size: 48px;
+        margin-bottom: 25px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 35px;
+        font-size: 30px;
+        margin-bottom: 45px;
+      }
+
+      .time {
+        font-size: 110px;
+        line-height: 1;
+        margin-bottom: 35px;
+      }
+
+      .time span {
+        font-size: 55px;
+        margin-left: 20px;
+      }
+
+      .details p {
+        font-size: 36px;
+        margin: 16px 0;
+      }
+
+      .right {
+        text-align: center;
+        min-width: 330px;
+      }
+
+      .icon {
+        font-size: 120px;
+        margin-bottom: 20px;
+      }
+
+      .temp {
+        font-size: 50px;
+        font-weight: bold;
+        margin-bottom: 25px;
+      }
+
+      .feels {
+        font-size: 34px;
+        margin-bottom: 15px;
+      }
+
+      .condition {
+        font-size: 38px;
+        font-weight: bold;
+        margin-bottom: 55px;
+      }
+
+      .updated {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+
+        margin-top: 40px;
+        font-size: 24px;
+        color: #fff;
+      }
+
+      #updated {
+        font-weight: 500;
+      }
+
+      #refresh {
+        width: 42px;
+        height: 42px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: transparent;
+        color: white;
+
+        font-size: 22px;
+        cursor: pointer;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        transition: 0.25s;
+      }
+
+      #refresh:hover {
+        background: transparent;
+        transform: rotate(180deg);
+      }
+
+      #refresh:active {
+        transform: scale(0.95) rotate(180deg);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="weather-card">
+      <div class="left">
+        <div class="date"></div>
+
+        <div class="meta">
+          <span></span>
+        </div>
+
+        <div class="time"><span></span></div>
+
+        <div class="details">
+          <p id="humidity"></p>
+          <p id="pressure"></p>
+          <p id="wind"></p>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="icon"></div>
+
+        <div class="temp"></div>
+        <div class="feels"></div>
+        <div class="condition"></div>
+
+        <div class="updated">
+          <span id="updated"></span>
+          <button id="refresh">🔄</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const API_KEY = "8dfec89d828f2cc267c8f82a4510b8f6";
+
+    const refreshBtn = document.querySelector("#refresh");
+
+    document.addEventListener("DOMContentLoaded", getData);
+
+    refreshBtn.addEventListener("click", handleClickRefresh);
+
+    function showDateAndTime() {
+      const dateSpan = document.querySelector(".date");
+
+      const timeSpan = document.querySelector(".time");
+
+      const updateLabel = document.querySelector("#updated");
+      const now = new Date();
+
+      const date = now.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        weekday: "short",
+      });
+
+      const time = now.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+
+      const formatted = now.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+
+      dateSpan.textContent = date;
+      timeSpan.textContent = time;
+      updateLabel.textContent = formatted;
+    }
+
+    function getData() {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=en&appid=${API_KEY}`;
+
+          let data = fetch(apiUrl)
+            .then((response) => response.json())
+            .then((data) => {
+              renderWeather(data);
+              showDateAndTime();
+            })
+            .catch((error) => console.error(error));
+        },
+        (error) => {
+          console.error(error.message);
+        },
+      );
+    }
+
+    function renderWeather(data) {
+      const sunUpSpan = document.querySelector(".meta");
+      const humidityLabel = document.querySelector("#humidity");
+      const pressureLabel = document.querySelector("#pressure");
+      const windLabel = document.querySelector("#wind");
+
+      const iconLabel = document.querySelector(".icon");
+      const tempLabel = document.querySelector(".temp");
+      const feelsLabel = document.querySelector(".feels");
+      const conditionLabel = document.querySelector(".condition");
+
+      const sunrise = new Date(data.sys.sunrise * 1000);
+
+      const timeSunrise = sunrise.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+
+      sunUpSpan.textContent = `⏰ SUN  ${timeSunrise}`;
+      humidityLabel.textContent = `Humidity: ${data.main.humidity}%`;
+
+      pressureLabel.textContent = `Pressure: ${data.main.pressure} hPa`;
+
+      windLabel.textContent = `Wind: ${data.wind.speed} km/h SSE`;
+
+      tempLabel.textContent = `${Math.round(data.main.temp)} °C`;
+      feelsLabel.textContent = `Feels Like: ${Math.round(data.main.feels_like)} °C`;
+      conditionLabel.textContent = data.weather[0].main;
+
+      switch (data.weather[0].main) {
+        case "Clear":
+          iconLabel.textContent = "☀️";
+          break;
+
+        case "Clouds":
+          iconLabel.textContent = "☁️";
+          break;
+
+        case "Rain":
+          iconLabel.textContent = "🌧️";
+          break;
+
+        case "Snow":
+          iconLabel.textContent = "❄️";
+          break;
+
+        case "Thunderstorm":
+          iconLabel.textContent = "⛈️";
+          break;
+
+        default:
+          iconLabel.textContent = "🌤️";
+      }
+    }
+
+    function handleClickRefresh() {
+      getData();
+    }
+  </script>
+</html>
