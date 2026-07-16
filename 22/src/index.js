@@ -1,3 +1,5 @@
+import "./style.css";
+ 
  const API_KEY = "8dfec89d828f2cc267c8f82a4510b8f6";
 
     const refreshBtn = document.querySelector("#refresh");
