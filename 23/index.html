@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo List</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>ToDo List</h1>
+
+      <ul id="myList">
+        <li>
+          <span>Task 1</span>
+          <button>Delete</button>
+        </li>
+
+        <li>
+          <span>Task 2</span>
+          <button>Delete</button>
+        </li>
+
+        <li>
+          <span>Task 3</span>
+          <button>Delete</button>
+        </li>
+      </ul>
+
+      <div class="controls">
+        <input id="fld" type="text" placeholder="Enter the task" />
+
+        <button id="addBtn">Add task</button>
+      </div>
+    </div>
+
+    <div id="taskModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Task</h2>
+          <button class="close-btn">&times;</button>
+        </div>
+
+        <div class="modal-body">Тут буде текст задачі</div>
+
+        <div class="modal-footer">
+          <button class="close-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
